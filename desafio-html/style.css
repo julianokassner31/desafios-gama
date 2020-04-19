@@ -54,7 +54,7 @@ body {
 }
 
 .linksmenus > a:hover {
-    background-color: #249d499c;
+    background-color: #e69d17;
     cursor: pointer;
 }
 
@@ -189,7 +189,7 @@ iframe {
 }
 
 #contato > form button {
-    background-color: #249d499c;
+    background-color: #449e0b9c;
     color: whitesmoke;
     padding: 15px;
     border-radius: 5px;
@@ -201,7 +201,7 @@ iframe {
 }
 
 #contato > form button:hover {
-    background-color: #04423dcc;
+    background-color: #e69d17;
     cursor: pointer;
 }
 
@@ -245,7 +245,7 @@ iframe {
 }
 
 #footer {
-    background:#9c2725;
+    background: #e69d17;
     color: whitesmoke;
     height: 120px;
     font-weight: bold;
@@ -264,6 +264,15 @@ iframe {
     line-height: 1.5rem;
 }
 
+#saibamais {
+    text-align: left;
+    padding: 10px;
+}
+
+#saibamais span > a {
+    color: saddlebrown;
+}
+
 #container-modal {
     display: flex;
     align-items: center;
@@ -277,7 +286,7 @@ iframe {
 }
 
 #modal {
-    flex: 1;
+    display: block;
     background-color: whitesmoke;
     max-width: 300px;
     width: 100%;
@@ -289,6 +298,31 @@ iframe {
 
 .modal-header {
     font-weight: bold;
-    color: white;
+    background-color: #e69d17;
+    color: #f5f5f5;
     text-align: center;
+    padding: 15px;
+}
+
+#modal button {
+    float: right;
+    width: 20%;
+    background-color: #449e0b9c;
+    color: whitesmoke;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+#modal button:hover {
+    background-color: #e69d17;
+    cursor: pointer;
+
+}
+
+.content-modal {
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    line-height: 1.5rem;
 }
