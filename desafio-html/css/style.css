@@ -15,7 +15,7 @@ body {
     z-index: 2;
     padding: 10px;
     border-radius: 3px;
-    background: url('./fundo.jpg') no-repeat left center;
+    background: url('/img/fundo.jpg') no-repeat left center;
     box-shadow: 2px 2px 2px 0 rgba(30, 60, 90, 0.3);
 }
 
