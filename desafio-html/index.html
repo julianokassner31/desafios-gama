@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Corona Vírus</title>
+</head>
+<body>
+
+    <div id="container-modal" style="display: none;">
+        <div id="modal" >
+            <div class="modal-header">Mensagem</div>
+            <button onclick="closeModal()">Ok</button>
+        </div>
+        
+    </div>
+
+    <div class="content">
+        <nav class="nav">
+            <div class="logo">
+                <a href="#" onclick="scrollPage('home')">
+                    <img src="covid.png" alt="Alerta Covid-19">
+                </a>
+            </div>
+            <div class="linksmenus">
+                <a href="#" onclick="scrollPage('home')">Home</a>
+                <a href="#" onclick="scrollPage('sobre')">Sobre</a>
+                <a href="#" onclick="scrollPage('contato')">Contato</a>
+                <a href="#" onclick="scrollPage('saibamais')">Saiba Mais</a>
+            </div>
+        </nav>
+       
+        <div id="home">
+            <div class="noticia">
+                <h3>O que é o corona vírus?</h3>
+                <img src="./womanmask.jpg"/>
+                <p>É um vírus que tem causado uma doença 
+                    respiratória (covid-19) pelo agente coronavírus, 
+                    recentemente identificado na China. 
+                    Os coronavírus são uma grande família viral, 
+                    conhecidos desde meados de 1960, 
+                    que causam infecções respiratórias em seres humanos e em animais. 
+                    
+                    <a href="https://www.uol.com.br/vivabem/noticias/redacao/2020/01/25/tire-suas-principais-duvidas-sobre-o-coronavirus-que-se-espalha-pelo-mundo.htm">Saiba mais aqui!</a>
+                </p>
+            </div>
+            <div class="noticia">
+                <h3>Como surgiu o coronavírus?</h3>
+                <img src="./danger.jpg"/>
+                <p>Novos vírus são descobertos a todo momento. 
+                    Grande parte pula de outras espécies, 
+                    onde passam despercebidos, para os humanos. 
+                    A Sars passou para os humanos a partir de um animal selvagem conhecido como civeta 
+                    (ou gato-de-algália, parente do guaxinim) 
+                    —que era considerado uma iguaria na região de Guangdong, na China. 
+                    Já a Mers (Síndrome Respiratória do Oriente Médio, na sigla em inglês), 
+                    que matou 858 dos 2.494 pacientes identificados com a infecção desde 2012, geralmente pula de dromedários.
+                    <a href="https://www.uol.com.br/vivabem/noticias/redacao/2020/01/25/tire-suas-principais-duvidas-sobre-o-coronavirus-que-se-espalha-pelo-mundo.htm">Saiba mais aqui!</a>
+                </p>
+            </div>
+    
+            <iframe class="video" src="https://www.youtube.com/embed/H0pQp_EzpVg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe class="video" src="https://www.youtube.com/embed/M0icXxe1EUQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        
+        </div>
+        
+        <div id="sobre">
+            <div class="sobre-img">
+                
+                <img src="./eu.png" alt="Juliano Kassner">
+                
+                <div class="redessociais">
+                    <a href="https://www.linkedin.com/in/juliano-kassner/" target="_blank">
+                        <img src="./linkedin.png">
+                    </a>
+                    <a href="https://www.github.com/stoplanhousemt" target="_blank">
+                        <img src="./github.png">
+                    </a><a href="https://www.facebook.com/juliano.kassner" target="_blank">
+                        <img src="./facebook.png">
+                    </a>
+                </div>
+            </div>
+            <div class="sobremim">
+                <h3>Juliano Kassner</h3>
+                
+                <p>Formado em análise e desenvolvimento de sistemas em julho de 2016,
+                    pela Universidade de Cuiabá - UNIC.</p>
+
+                    <p>Entrei no mundo dos computadores
+                    após fazer um curso de manutenção e redes de computadores - 2006, logo depois do término
+                    consegui meu primeiro emprego na areá como como técnico de informática,
+                    alguns anos depois fui promovido rs, a técnico de internet, onde aprendi um pouco de linux,
+                    e nas horas livres desenvolvia meu primeiro sisteminha de ordens de serviços em PHP.
+                    Depois de mais alguns anos mudei de area, por força maior (R$).</p>
+                    
+                    <p>Mas ainda continuava a gostar da area e loco para voltar, foi quando uma reviravolta aconteceu em minha vida,
+                    e percebi que se quisesse fazer valer a pena mesmo, teria que estudar para entrar na area novamente.</p>
+                    
+                    <p>Graças a Deus consegui fazer a faculdade, e tive a sorte de conseguir emprego como programador logo depois de formado,
+                    no lugar o qual só tenho a agradecer por todo apredizado que tive.</p>
+                    
+                    <p>Atuamente trabalho como Dev Fullstack reescrevendo um sistema legado, tenho mais afinidade com o backend, estou
+                    me aprimorando no frontend, tecnologias que utilizo com frequência nos últimos 6 meses são Java, Javascript,
+                    frameworks como Extjs e Spring. Já trabalhei com Ionic 3 e Angular 2+.
+                    Ultimamente venho estudando NodeJs, e testando algumas tecnologias de frontend como React, React Native
+                    VueJs 2, fora HTML e CSS.
+                </p>
+            </div>
+        </div>
+    
+        <div id="contato">
+            
+            <h3>Entre em contato</h3>
+        
+            <form>
+                <input type="text" name="nome" placeholder="Seu nome"/>
+                <input type="email" name="email" placeholder="Seu email"/>
+                <textarea placeholder="Deixe uma mensagem"></textarea>
+                <button onclick="event.preventDefault(); enviarmsg(this)">Enviar</button>
+            </form>
+          
+        </div>
+    
+        <div id="saibamais">
+            <h3>Fonte de noticias</h3>
+            <span>
+                <a target="_blank" href="https://www.uol.com.br/vivabem/noticias/redacao/2020/01/25/tire-suas-principais-duvidas-sobre-o-coronavirus-que-se-espalha-pelo-mundo.htm">O que é o corona vírus? Via Uol</a>
+            </span>
+
+            <span>
+                <a target="_blank" href="https://www.uol.com.br/vivabem/noticias/redacao/2020/01/25/tire-suas-principais-duvidas-sobre-o-coronavirus-que-se-espalha-pelo-mundo.htm">Como surgiu o coronavírus? Via Uol</a>
+            </span> 
+        </div>
+    </div>
+    <div id="footer">
+        Development by<br> Juliano Kassner, Dois Vizinhos - PR, at 2020
+    </div>
+</body>
+<script src="./script.js"></script>
+</html>
