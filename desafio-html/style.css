@@ -189,7 +189,7 @@ iframe {
 }
 
 #contato > form button {
-    background-color: #2f9289cc;
+    background-color: #249d499c;
     color: whitesmoke;
     padding: 15px;
     border-radius: 5px;
@@ -245,7 +245,7 @@ iframe {
 }
 
 #footer {
-    background: #251c0d;
+    background:#9c2725;
     color: whitesmoke;
     height: 120px;
     font-weight: bold;
@@ -253,6 +253,7 @@ iframe {
     text-align: center;
     display: flex;
     align-items: center;
+    line-height: 1.5rem;
 }
 
 #saibamais {
