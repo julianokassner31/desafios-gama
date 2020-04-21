@@ -44,13 +44,33 @@ body {
     font-weight: bold;
 }
 
+.logo {
+    min-width: 300px;
+    width: 100%;
+    align-items: center;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+}
+
+.logo > a > img {
+    max-width: 180px;
+    width: 100%;
+}
+
+
 @media(max-width: 490px) {
     .logo {
         display: none;
     }
     .linksmenus > a {
+        min-width: 300px;
         width: 100%;
-    } 
+    }
+    .nav {
+        min-width: 300px;
+    }
+     
 }
 
 .linksmenus > a:hover {
@@ -65,26 +85,6 @@ a {
 
 a:visited {
     color: white;
-}
-
-.logo {
-    min-width: 300px;
-    width: 100%;
-    align-items: center;
-    flex: 1;
-    display: flex;
-    align-items: flex-end;
-}
-
-@media(max-width: 400px) {
-    .logo {
-        display: none;
-    }
-}
-
-.logo > a > img {
-    max-width: 180px;
-    width: 100%;
 }
 
 .video {
@@ -105,7 +105,7 @@ iframe {
     margin: 5px;
 }
 
-#home, #sobre, #contato,#saibamais, #footer {
+#home, #sobre, #contato, #saibamais, #footer {
     display: flex;
     flex-wrap: wrap;
     position: relative;
@@ -171,6 +171,8 @@ iframe {
 #contato h3 {
     flex: 1;
     text-align: center;
+    min-width: 225px;
+    width: 100%;
 }
 
 #contato > form {
@@ -178,6 +180,7 @@ iframe {
     flex-direction: column;
     flex: 1;
     max-width: 500px;
+    min-width: 300px;
     width: 100%;
     padding: 10px;
 }
@@ -271,12 +274,14 @@ iframe {
 #saibamais h3  {
     text-align: center;
     flex: 1;
+    min-width: 225px;
 }
 #saibamais > div {
     display: flex;
     flex-direction: column;
     flex: 1;
     margin: 10px;
+    min-width: 225px;
 }
 
 #saibamais span > a {
