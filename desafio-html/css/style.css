@@ -175,6 +175,12 @@ iframe {
     width: 100%;
 }
 
+@media(max-width: 400px){
+    #contato h3 {
+        display: none;
+    }
+}
+
 #contato > form {
     display: flex;
     flex-direction: column;
