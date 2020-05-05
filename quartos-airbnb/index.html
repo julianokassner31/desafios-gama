@@ -13,7 +13,12 @@
   <body>
     <div class="container">
       <div>
-        <input type="text" placeholder="Qual a cidade?" name="busca" />
+        <input
+          type="text"
+          placeholder="Qual a cidade?"
+          name="busca"
+          onblur="buscarPorCidade(this)"
+        />
       </div>
 
       <div id="quartos"></div>

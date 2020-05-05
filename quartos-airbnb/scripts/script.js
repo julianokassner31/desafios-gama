@@ -31,7 +31,7 @@ window.onload = function () {
       var quarto = quartos[i];
 
       quarto.id = i + 1;
-
+      quarto.cidade = cidades[i];
       createDivQuarto(quarto);
 
       quartosFilter.push(quarto);
@@ -40,6 +40,26 @@ window.onload = function () {
 
   request.send();
 };
+
+function buscarPorCidade(input) {
+  var regex = new RegExp(input.value);
+  quartosFilter = quartos;
+  quartosFilter = quartosFilter.filter((q) => regex.test(q.cidade));
+
+  if (quartosFilter.length) {
+    clearQuartos();
+    quartosFilter.forEach((q) => createDivQuarto(q));
+  }
+}
+function clearQuartos() {
+  var divQuartos = document.getElementById("quartos");
+  var child = divQuartos.firstChild;
+
+  while (child) {
+    divQuartos.removeChild(child);
+    child = divQuartos.firstChild;
+  }
+}
 
 function createDivQuarto(quarto) {
   var divQuartos = document.getElementById("quartos");
