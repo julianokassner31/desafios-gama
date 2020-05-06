@@ -1,20 +1,20 @@
 var quartos = [];
 var quartosFilter = [];
 var cidades = [
-  "São Paulo",
-  "Rio de Janeiro",
-  "Minas Gerais",
-  "Curitiba",
-  "Santos",
-  "Cuiaba",
-  "Porto Alegre",
-  "Bahia",
-  "Espirito Santo",
-  "Manaus",
-  "Ceará",
-  "Blumenau",
-  "Florianópolis",
-  "Dois Vizinhos",
+  { nome: "São Paulo", lat: "", lng: "" },
+  { nome: "Rio de Janeiro", lat: "", lng: "" },
+  { nome: "Minas Gerais", lat: "", lng: "" },
+  { nome: "Curitiba", lat: "", lng: "" },
+  { nome: "Santos", lat: "", lng: "" },
+  { nome: "Cuiaba", lat: "", lng: "" },
+  { nome: "Porto Alegre", lat: "", lng: "" },
+  { nome: "Bahia", lat: "", lng: "" },
+  { nome: "Espirito Santo", lat: "", lng: "" },
+  { nome: "Manaus", lat: "", lng: "" },
+  { nome: "Ceará", lat: "", lng: "" },
+  { nome: "Blumenau", lat: "", lng: "" },
+  { nome: "Florianópolis", lat: "", lng: "" },
+  { nome: "Dois Vizinhos", lat: "", lng: "" },
 ];
 
 window.onload = function () {
@@ -67,6 +67,9 @@ function createDivQuarto(quarto) {
   divQuarto.id = quarto.id;
   divQuarto.className = "quarto";
   divQuarto.style.backgroundImage = "url(" + quarto.photo + ")";
+  divQuarto.style.cursor = "pointer";
+
+  divQuarto.addEventListener("click", viewInMap);
 
   createTipoQuarto(divQuarto, quarto["property_type"]);
   createDivPrice(divQuarto, quarto.price);
@@ -88,6 +91,33 @@ function createDivPrice(divQuarto, price) {
     style: "currency",
     currency: "BRL",
   }).format(price);
-  divPrice.innerHTML = money;
+  var spanPrice = document.createElement("span");
+  spanPrice.innerHTML = money;
+  divPrice.append(spanPrice);
   divQuarto.appendChild(divPrice);
+}
+
+var map;
+function viewInMap(ev) {
+  console.log(ev);
+  var divMap = document.getElementById("map");
+  var containerMap = document.getElementById("container-map");
+  var uluru = { lat: -23.533773, lng: -46.62529 };
+  var map = new google.maps.Map(divMap, {
+    zoom: 12,
+    center: uluru,
+  });
+  var marker = new google.maps.Marker({ position: uluru, map: map });
+
+  divMap.addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
+
+  containerMap.addEventListener("click", function () {
+    this.style.display = "none";
+  });
+
+  containerMap.style.display = "flex";
+  containerMap.style.top = ev.clientY + "px";
+  window.scrollTo({ top: ev.screenY - 100, behavior: "smooth" });
 }
