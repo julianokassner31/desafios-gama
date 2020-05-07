@@ -1,20 +1,31 @@
 var quartos = [];
 var quartosFilter = [];
 var cidades = [
-  { nome: "São Paulo", lat: "", lng: "" },
-  { nome: "Rio de Janeiro", lat: "", lng: "" },
-  { nome: "Minas Gerais", lat: "", lng: "" },
-  { nome: "Curitiba", lat: "", lng: "" },
-  { nome: "Santos", lat: "", lng: "" },
-  { nome: "Cuiaba", lat: "", lng: "" },
-  { nome: "Porto Alegre", lat: "", lng: "" },
-  { nome: "Bahia", lat: "", lng: "" },
-  { nome: "Espirito Santo", lat: "", lng: "" },
-  { nome: "Manaus", lat: "", lng: "" },
-  { nome: "Ceará", lat: "", lng: "" },
-  { nome: "Blumenau", lat: "", lng: "" },
-  { nome: "Florianópolis", lat: "", lng: "" },
-  { nome: "Dois Vizinhos", lat: "", lng: "" },
+  { nome: "São Paulo", uf: "SP", lat: -23.5329, lng: -46.6395 },
+  { nome: "Rio de Janeiro", uf: "RJ", lat: -22.9129, lng: -43.2003 },
+  { nome: "Rio de Janeiro", uf: "RJ", lat: -22.9129, lng: -43.2003 },
+  { nome: "Curitiba", uf: "PR", lat: -25.4195, lng: -49.2646 },
+  { nome: "Santos", uf: "ES", lat: -23.9535, lng: -46.335 },
+  { nome: "Cuiaba", uf: "MT", lat: -15.601, lng: -56.0974 },
+  { nome: "Porto Alegre", uf: "RS", lat: -30.0318, lng: -51.2065 },
+  { nome: "Porto Alegre", uf: "RS", lat: -30.0318, lng: -51.2065 },
+  { nome: "Porto Alegre", uf: "RS", lat: -30.0318, lng: -51.2065 },
+  { nome: "Santos", uf: "ES", lat: -23.9535, lng: -46.335 },
+  { nome: "Santos", uf: "ES", lat: -23.9535, lng: -46.335 },
+  { nome: "Blumenau", uf: "SC", lat: -26.9155, lng: -49.0709 },
+  { nome: "Florianópolis", uf: "SC", lat: -27.5945, lng: -48.5477 },
+  { nome: "Dois Vizinhos", uf: "PR", lat: -25.7407, lng: -53.057 },
+  { nome: "Dois Vizinhos", uf: "PR", lat: -25.7407, lng: -53.057 },
+  { nome: "Dois Vizinhos", uf: "PR", lat: -25.7407, lng: -53.057 },
+  { nome: "Dois Vizinhos", uf: "PR", lat: -25.7407, lng: -53.057 },
+  { nome: "Dois Vizinhos", uf: "PR", lat: -25.7407, lng: -53.057 },
+  { nome: "Sorriso", uf: "MT", lat: -12.5425, lng: -55.7211 },
+  { nome: "Sorriso", uf: "MT", lat: -12.5425, lng: -55.7211 },
+  { nome: "Sorriso", uf: "MT", lat: -12.5425, lng: -55.7211 },
+  { nome: "Sorriso", uf: "MT", lat: -12.5425, lng: -55.7211 },
+  { nome: "Sinop", uf: "MT", lat: -11.8604, lng: -55.5091 },
+  { nome: "Sinop", uf: "MT", lat: -11.8604, lng: -55.5091 },
+  { nome: "Sinop", uf: "MT", lat: -11.8604, lng: -55.5091 },
 ];
 
 window.onload = function () {
@@ -30,7 +41,7 @@ window.onload = function () {
     for (var i = 0; i < quartos.length; i++) {
       var quarto = quartos[i];
 
-      quarto.id = i + 1;
+      quarto.id = i;
       quarto.cidade = cidades[i];
       createDivQuarto(quarto);
 
@@ -41,16 +52,18 @@ window.onload = function () {
   request.send();
 };
 
-function buscarPorCidade(input) {
-  var regex = new RegExp(input.value);
-  quartosFilter = quartos;
-  quartosFilter = quartosFilter.filter((q) => regex.test(q.cidade));
+function filtrar() {
+  var quartos = Filtro.setQuartos(quartosFilter)
+    .porCidade()
+    .porTipo()
+    .porValor()
+    .build();
 
-  if (quartosFilter.length) {
-    clearQuartos();
-    quartosFilter.forEach((q) => createDivQuarto(q));
-  }
+  clearQuartos();
+
+  quartos.forEach((q) => createDivQuarto(q));
 }
+
 function clearQuartos() {
   var divQuartos = document.getElementById("quartos");
   var child = divQuartos.firstChild;
@@ -71,8 +84,8 @@ function createDivQuarto(quarto) {
 
   divQuarto.addEventListener("click", viewInMap);
 
-  createTipoQuarto(divQuarto, quarto["property_type"]);
-  createDivPrice(divQuarto, quarto.price);
+  createTipoQuarto(divQuarto, quarto.property_type);
+  createDivInfoQuarto(divQuarto, quarto);
 
   divQuartos.appendChild(divQuarto);
 }
@@ -82,42 +95,88 @@ function createTipoQuarto(divQuarto, tipo) {
   divTipo.className = "tipo";
   divTipo.innerHTML = tipo;
   divQuarto.appendChild(divTipo);
+
+  appendOptionsToSelect(tipo);
 }
 
-function createDivPrice(divQuarto, price) {
-  var divPrice = document.createElement("div");
-  divPrice.className = "price";
+function appendOptionsToSelect(tipo) {
+  var select = document.getElementById("filtroTipo");
+  var options = select.children;
+
+  var hasOption = false;
+  for (var i = 0; i < options.length; i++) {
+    var option = options.item(i);
+    if (option.value == tipo) {
+      hasOption = true;
+      break;
+    }
+  }
+
+  if (!hasOption) {
+    var op = document.createElement("option");
+    op.value = tipo;
+    op.label = tipo;
+    select.appendChild(op);
+  }
+}
+
+function createDivInfoQuarto(divQuarto, quarto) {
+  var divInfoQuarto = document.createElement("div");
+  divInfoQuarto.className = "infoquarto";
+
+  createSpanPrice(divInfoQuarto, quarto);
+
+  createDivCidade(divInfoQuarto, quarto);
+
+  divQuarto.appendChild(divInfoQuarto);
+}
+
+function createDivCidade(divInfoQuarto, quarto) {
+  var divCidade = document.createElement("div");
+  divCidade.className = "cidade";
+
+  var p = document.createElement("p");
+  var cidade = quarto.cidade;
+  p.innerHTML = cidade.nome + " - " + cidade.uf + "<br>" + quarto.name;
+  divCidade.append(p);
+
+  divInfoQuarto.append(divCidade);
+}
+function createSpanPrice(divInfoQuarto, quarto) {
   var money = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
-  }).format(price);
+  }).format(quarto.price);
   var spanPrice = document.createElement("span");
+  spanPrice.className = "price";
   spanPrice.innerHTML = money;
-  divPrice.append(spanPrice);
-  divQuarto.appendChild(divPrice);
+  divInfoQuarto.append(spanPrice);
+}
+
+function filtroTipo(el) {
+  if (el.value === "Tudo") {
+    quartos.forEach((q) => createDivQuarto(q));
+    return;
+  }
+  clearQuartos();
+  quartosFilter = quartos.filter((t) => t.property_type === el.value);
+  quartosFilter.forEach((q) => createDivQuarto(q));
 }
 
 var map;
-function viewInMap(ev) {
-  console.log(ev);
+function viewInMap(el) {
   var divMap = document.getElementById("map");
-  var containerMap = document.getElementById("container-map");
-  var uluru = { lat: -23.533773, lng: -46.62529 };
+  var btnModal = document.getElementById("btn-modal");
+  var divLabelModalLocation = document.getElementById("labelModalLocation");
+  var cidade = cidades[parseInt(el.currentTarget.id)];
+  var quarto = quartosFilter[el.currentTarget.id];
+  divLabelModalLocation.innerHTML = quarto.property_type + " em " + cidade.nome;
+  var position = { lat: cidade.lat, lng: cidade.lng };
   var map = new google.maps.Map(divMap, {
-    zoom: 12,
-    center: uluru,
+    zoom: 16,
+    center: position,
   });
-  var marker = new google.maps.Marker({ position: uluru, map: map });
+  var marker = new google.maps.Marker({ position: position, map: map });
 
-  divMap.addEventListener("click", function (event) {
-    event.stopPropagation();
-  });
-
-  containerMap.addEventListener("click", function () {
-    this.style.display = "none";
-  });
-
-  containerMap.style.display = "flex";
-  containerMap.style.top = ev.clientY + "px";
-  window.scrollTo({ top: ev.screenY - 100, behavior: "smooth" });
+  btnModal.click();
 }

@@ -8,25 +8,104 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
     <title>Quartos AirBnb</title>
   </head>
   <body>
     <div class="container">
-      <div>
-        <input
-          type="text"
-          placeholder="Qual a cidade?"
-          name="busca"
-          onblur="buscarPorCidade(this)"
-        />
-      </div>
+      <input
+        id="inputCidade"
+        class="form-control"
+        type="text"
+        placeholder="Qual a cidade?"
+        name="busca"
+        onkeyup="filtrar(this)"
+      />
 
+      <div class="filtros">
+        <select
+          class="form-control"
+          id="filtroTipo"
+          onchange="filtroTipo(this)"
+        >
+          <option>Tudo</option>
+        </select>
+        <select class="form-control" id="order">
+          <option>Nome</option>
+          <option>Menor Preço</option>
+          <option>Maior Preço</option>
+        </select>
+      </div>
+      <!--Container dos quartos que sao gerados via js-->
       <div id="quartos"></div>
     </div>
+    <!-- gato para abrir modal -->
+    <button
+      hidden
+      id="btn-modal"
+      type="button"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#modalLocation"
+    ></button>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalLocation"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalLocation"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="labelModalLocation"></h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Fechar"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
 
-    <div id="container-map">
-      <div id="map"></div>
+          <div class="modal-body" id="map"></div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+    <div id="container-map"></div>
 
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjyFW52IEyJ0bq2rM-fE8OKak93DATkg"
@@ -34,5 +113,6 @@
       defer
     ></script>
     <script src="./scripts/script.js"></script>
+    <script src="./scripts/filtros.js"></script>
   </body>
 </html>
