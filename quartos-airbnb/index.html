@@ -29,31 +29,102 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="./styles/multirange.css" />
+    <script src="./scripts/multirange.js"></script>
     <title>Quartos AirBnb</title>
   </head>
   <body>
-    <div class="container">
-      <input
-        id="inputCidade"
-        class="form-control"
-        type="text"
-        placeholder="Qual a cidade?"
-        name="busca"
-        onkeyup="filtrar(this)"
-      />
+    <!-- gera conteudo quando fizer o click no menu-hamburger -->
+    <div id="menu-lateral-mobile">
+      <button class="w-100 btn btn-primary btn-lg" onclick="showFiltros()">
+        Aplicar
+      </button>
+    </div>
 
-      <div class="filtros">
-        <select
-          class="form-control"
-          id="filtroTipo"
-          onchange="filtroTipo(this)"
+    <div class="container">
+      <div id="menu-hamburger" onclick="showFiltros()">
+        <svg
+          class="bi bi-list"
+          width="40"
+          height="40"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
         >
+          <path
+            fill-rule="evenodd"
+            d="M2.5 11.5A.5.5 0 013 11h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5zm0-4A.5.5 0 013 7h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5zm0-4A.5.5 0 013 3h10a.5.5 0 010 1H3a.5.5 0 01-.5-.5z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <span>Filtro e Ordenação</span>
+      </div>
+      <div class="busca">
+        <input
+          id="inputCidade"
+          class="form-control"
+          type="text"
+          placeholder="Qual a cidade?"
+          name="busca"
+          onkeyup="filtrar(this)"
+        />
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Checkin"
+          onkeyup="filtrar(this)"
+        />
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Checkout"
+          onkeyup="filtrar(this)"
+        />
+      </div>
+
+      <div class="filtro">
+        <h5>Filtro e Ordenação</h5>
+
+        <input
+          type="text"
+          class="form-control form-control-lg"
+          id="nome"
+          placeholder="Nome da Acomodação"
+          onkeyup="filtrar(this)"
+        />
+
+        <select
+          class="form-control form-control-lg"
+          id="filtroTipo"
+          onchange="filtrar(this)"
+        >
+          <option value="" disabled selected>Tipo da Acomodação</option>
           <option>Tudo</option>
         </select>
-        <select class="form-control" id="order">
-          <option>Nome</option>
-          <option>Menor Preço</option>
-          <option>Maior Preço</option>
+
+        <!-- <div id="divRangeValor">
+          <input
+            type="range"
+            class="slider"
+            id="rangeValor"
+            multiple
+            oninput="rangeValor(this)"
+          />
+          <div>
+            <span id="vlMin"></span>
+            <span id="vlMax"></span>
+          </div>
+        </div> -->
+        <select
+          onchange="filtrar()"
+          class="form-control form-control-lg"
+          id="order"
+        >
+          <option value="" disabled selected>Ordenar por</option>
+          <option value="nome">Nome do quarto</option>
+          <option value="menor">Menor Preço</option>
+          <option value="maior">Maior Preço</option>
+          <option value="tipo">Tipo Acomodação</option>
         </select>
       </div>
       <!--Container dos quartos que sao gerados via js-->

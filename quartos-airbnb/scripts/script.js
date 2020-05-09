@@ -28,6 +28,8 @@ var cidades = [
   { nome: "Sinop", uf: "MT", lat: -11.8604, lng: -55.5091 },
 ];
 
+var menuMobileShow = false;
+
 window.onload = function () {
   var request = new this.XMLHttpRequest();
 
@@ -37,7 +39,9 @@ window.onload = function () {
   );
 
   request.onload = function () {
-    quartos = JSON.parse(this.responseText);
+    quartos = JSON.parse(this.responseText).sort((a, b) =>
+      a.price < b.price ? -1 : a.price > b.price ? 1 : 0
+    );
     for (var i = 0; i < quartos.length; i++) {
       var quarto = quartos[i];
 
@@ -47,6 +51,8 @@ window.onload = function () {
 
       quartosFilter.push(quarto);
     }
+
+    createFilterPrice();
   };
 
   request.send();
@@ -55,8 +61,10 @@ window.onload = function () {
 function filtrar() {
   var quartos = Filtro.setQuartos(quartosFilter)
     .porCidade()
+    .porNome()
     .porTipo()
     .porValor()
+    .ordenarPor()
     .build();
 
   clearQuartos();
@@ -142,6 +150,7 @@ function createDivCidade(divInfoQuarto, quarto) {
 
   divInfoQuarto.append(divCidade);
 }
+
 function createSpanPrice(divInfoQuarto, quarto) {
   var money = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -153,14 +162,19 @@ function createSpanPrice(divInfoQuarto, quarto) {
   divInfoQuarto.append(spanPrice);
 }
 
-function filtroTipo(el) {
-  if (el.value === "Tudo") {
-    quartos.forEach((q) => createDivQuarto(q));
-    return;
-  }
-  clearQuartos();
-  quartosFilter = quartos.filter((t) => t.property_type === el.value);
-  quartosFilter.forEach((q) => createDivQuarto(q));
+function createFilterPrice() {
+  var q = quartosFilter.sort((a, b) =>
+    a.price < b.price ? -1 : a.price > b.price ? 1 : 0
+  );
+  var min = q[0].price;
+  var max = q[q.length - 1].price;
+  document.getElementById("vlMin").innerHTML = min;
+  document.getElementById("vlMax").innerHTML = max;
+  var elRangeValor = document.getElementById("rangeValor");
+
+  elRangeValor.value = min + "," + max;
+  elRangeValor.valueLow = min;
+  elRangeValor.valueHigh = max;
 }
 
 var map;
@@ -179,4 +193,17 @@ function viewInMap(el) {
   var marker = new google.maps.Marker({ position: position, map: map });
 
   btnModal.click();
+}
+
+function rangeValor(el) {
+  console.log(el.value);
+}
+
+function showFiltros() {
+  var lateralMobile = document.querySelector("#menu-lateral-mobile");
+  menuMobileShow = !menuMobileShow;
+  lateralMobile.style.display = menuMobileShow ? "block" : "none";
+  var filtro = document.querySelector(".filtro");
+  filtro.style.display = "block";
+  lateralMobile.insertBefore(filtro, lateralMobile.children[0]);
 }
