@@ -5,6 +5,20 @@ body {
   box-sizing: border-box;
 }
 
+#topo {
+  width: 100%;
+  background-color: coral;
+  height: 8vh;
+  box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.5);
+  position: absolute;
+}
+
+@media (max-width: 768px) {
+  #topo {
+    height: 32vh;
+  }
+}
+
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -20,9 +34,8 @@ body {
 }
 
 .busca input {
-  outline: none;
+  outline: none !important;
   border-radius: 4px;
-  border: 2px solid white;
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
   font-size: 1.5rem !important;
   text-align: center;
@@ -32,6 +45,11 @@ body {
   margin: 10px;
   flex: 1;
 }
+
+.busca input:focus {
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
 #menu-hamburger {
   display: none;
 }
@@ -49,10 +67,6 @@ body {
   min-width: 300px;
   width: 100%;
   flex: 2;
-}
-
-input:hover {
-  border: 2px solid rgba(48, 119, 250, 0.507);
 }
 
 @media (max-width: 769px) {

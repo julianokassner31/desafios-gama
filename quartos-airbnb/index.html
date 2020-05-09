@@ -41,6 +41,8 @@
       </button>
     </div>
 
+    <div id="topo"></div>
+
     <div class="container">
       <div id="menu-hamburger" onclick="showFiltros()">
         <svg
@@ -130,7 +132,7 @@
       <!--Container dos quartos que sao gerados via js-->
       <div id="quartos"></div>
     </div>
-    <!-- gato para abrir modal -->
+    <!-- gato para abrir modal com maps -->
     <button
       hidden
       id="btn-modal"
@@ -139,7 +141,7 @@
       data-toggle="modal"
       data-target="#modalLocation"
     ></button>
-    <!-- Modal -->
+    <!-- Modal para abrir maps-->
     <div
       class="modal fade"
       id="modalLocation"
@@ -176,7 +178,6 @@
         </div>
       </div>
     </div>
-    <div id="container-map"></div>
 
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjyFW52IEyJ0bq2rM-fE8OKak93DATkg"

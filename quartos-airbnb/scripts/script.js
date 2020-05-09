@@ -31,31 +31,24 @@ var cidades = [
 var menuMobileShow = false;
 
 window.onload = function () {
-  var request = new this.XMLHttpRequest();
+  fetch("https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72")
+    .then((resp) => resp.json())
+    .then((data) => {
+      quartos = data.sort((a, b) =>
+        a.price < b.price ? -1 : a.price > b.price ? 1 : 0
+      );
+      for (var i = 0; i < quartos.length; i++) {
+        var quarto = quartos[i];
 
-  request.open(
-    "GET",
-    "https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72"
-  );
+        quarto.id = i;
+        quarto.cidade = cidades[i];
+        createDivQuarto(quarto);
 
-  request.onload = function () {
-    quartos = JSON.parse(this.responseText).sort((a, b) =>
-      a.price < b.price ? -1 : a.price > b.price ? 1 : 0
-    );
-    for (var i = 0; i < quartos.length; i++) {
-      var quarto = quartos[i];
+        quartosFilter.push(quarto);
+      }
 
-      quarto.id = i;
-      quarto.cidade = cidades[i];
-      createDivQuarto(quarto);
-
-      quartosFilter.push(quarto);
-    }
-
-    createFilterPrice();
-  };
-
-  request.send();
+      createFilterPrice();
+    });
 };
 
 function filtrar() {
@@ -69,7 +62,7 @@ function filtrar() {
 
   clearQuartos();
 
-  quartos.forEach((q) => createDivQuarto(q));
+  quartos.forEach(createDivQuarto);
 }
 
 function clearQuartos() {

@@ -17,7 +17,8 @@ var Filtro = (function () {
 
   function _porTipo() {
     var selectTipo = document.getElementById("filtroTipo");
-    if (selectTipo.value === "Tudo") return this;
+
+    if (selectTipo.value === "" || selectTipo.value === "Tudo") return this;
     _quartos = _quartos.filter((q) => q.property_type === selectTipo.value);
     return this;
   }
