@@ -161,13 +161,13 @@ function createFilterPrice() {
   );
   var min = q[0].price;
   var max = q[q.length - 1].price;
-  document.getElementById("vlMin").innerHTML = min;
-  document.getElementById("vlMax").innerHTML = max;
-  var elRangeValor = document.getElementById("rangeValor");
+  // document.getElementById("vlMin").innerHTML = min;
+  // document.getElementById("vlMax").innerHTML = max;
+  // var elRangeValor = document.getElementById("rangeValor");
 
-  elRangeValor.value = min + "," + max;
-  elRangeValor.valueLow = min;
-  elRangeValor.valueHigh = max;
+  // elRangeValor.value = min + "," + max;
+  // elRangeValor.valueLow = min;
+  // elRangeValor.valueHigh = max;
 }
 
 var map;
@@ -199,4 +199,47 @@ function showFiltros() {
   var filtro = document.querySelector(".filtro");
   filtro.style.display = "block";
   lateralMobile.insertBefore(filtro, lateralMobile.children[0]);
+}
+
+function maskData(event) {
+  var el = event.target;
+  var regex = new RegExp(/\//g);
+  var data = el.value.replace(regex, "");
+  el.style.border = "none";
+
+  if (data === "") return;
+
+  var format = formatDate(data);
+
+  if (event.type === "blur") {
+    if (!validDate(format)) {
+      el.style.border = "1px solid red";
+    }
+
+    return;
+  }
+
+  if (data.length == 8) {
+    debugger;
+    if (!validDate(format)) {
+      el.style.border = "2px solid red";
+    } else {
+      el.value = new Date(format).toLocaleDateString("pt-BR");
+    }
+  }
+}
+
+function formatDate(data) {
+  return data
+    .substring(4, 8)
+    .concat("-")
+    .concat(data.substring(2, 4))
+    .concat("-")
+    .concat(data.substring(0, 2));
+}
+
+function validDate(data) {
+  data = new Date(data).toLocaleDateString("pt-BR");
+
+  return data !== "Invalid Date";
 }

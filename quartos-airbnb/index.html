@@ -74,13 +74,17 @@
           type="text"
           class="form-control"
           placeholder="Checkin"
-          onkeyup="filtrar(this)"
+          maxlength="10"
+          onkeyup="maskData(event)"
+          onblur="maskData(event)"
         />
         <input
           type="text"
           class="form-control"
           placeholder="Checkout"
-          onkeyup="filtrar(this)"
+          maxlength="10"
+          onkeyup="maskData(event)"
+          onblur="maskData(event)"
         />
       </div>
 
@@ -131,6 +135,9 @@
       </div>
       <!--Container dos quartos que sao gerados via js-->
       <div id="quartos"></div>
+    </div>
+    <div id="footer">
+      Desenvolvido com fins de teste de conhecimento para Gama Academy
     </div>
     <!-- gato para abrir modal com maps -->
     <button
