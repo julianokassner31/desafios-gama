@@ -129,6 +129,11 @@ function createDivInfoQuarto(divQuarto, quarto) {
 
   createDivCidade(divInfoQuarto, quarto);
 
+  divInfoQuarto.addEventListener("click", function (event) {
+    event.stopPropagation();
+    reservar(event);
+  });
+
   divQuarto.appendChild(divInfoQuarto);
 }
 
@@ -145,10 +150,7 @@ function createDivCidade(divInfoQuarto, quarto) {
 }
 
 function createSpanPrice(divInfoQuarto, quarto) {
-  var money = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(quarto.price);
+  var money = formatCurrencyMoney(quarto.price);
   var spanPrice = document.createElement("span");
   spanPrice.className = "price";
   spanPrice.innerHTML = money;
@@ -172,9 +174,14 @@ function createFilterPrice() {
 
 var map;
 function viewInMap(el) {
-  var divMap = document.getElementById("map");
+  var divMap = document.getElementById("modalContent");
   var btnModal = document.getElementById("btn-modal");
-  var divLabelModalLocation = document.getElementById("labelModalLocation");
+  var divLabelModalLocation = document.getElementById("labelModal");
+
+  var divModalFooter = document.querySelector(".modal-footer");
+  var buttonLogin = divModalFooter.children[0];
+  buttonLogin.innerText = "Fechar";
+
   var cidade = cidades[parseInt(el.currentTarget.id)];
   var quarto = quartosFilter[el.currentTarget.id];
   divLabelModalLocation.innerHTML = quarto.property_type + " em " + cidade.nome;
@@ -203,43 +210,159 @@ function showFiltros() {
 
 function maskData(event) {
   var el = event.target;
-  var regex = new RegExp(/\//g);
-  var data = el.value.replace(regex, "");
-  el.style.border = "none";
 
-  if (data === "") return;
+  clearInputError(el);
 
-  var format = formatDate(data);
+  if (el.value === "") return;
+
+  var dataStringFormat = replaceSlashBar(el);
 
   if (event.type === "blur") {
-    if (!validDate(format)) {
-      el.style.border = "1px solid red";
+    var { hasError, messageError } = validDate(dataStringFormat, el);
+    if (hasError) {
+      setErrorInputDate(el, messageError);
     }
 
     return;
   }
 
-  if (data.length == 8) {
-    debugger;
-    if (!validDate(format)) {
-      el.style.border = "2px solid red";
+  if (el.value.length == 8) {
+    var { hasError, messageError } = validDate(dataStringFormat, el);
+    if (hasError) {
+      setErrorInputDate(el, messageError);
     } else {
-      el.value = new Date(format).toLocaleDateString("pt-BR");
+      el.value = formatDatePtBr(dataStringFormat);
     }
   }
 }
 
-function formatDate(data) {
-  return data
-    .substring(4, 8)
-    .concat("-")
-    .concat(data.substring(2, 4))
-    .concat("-")
-    .concat(data.substring(0, 2));
+function clearInputError(el) {
+  el.style.border = "none";
+  el.parentElement.children[1].style.visibility = "hidden";
+  el.parentElement.children[1].innerHTML = "";
 }
 
-function validDate(data) {
-  data = new Date(data).toLocaleDateString("pt-BR");
+function setErrorInputDate(el, messageError) {
+  el.style.border = "2px solid red";
+  el.parentElement.children[1].style.visibility = "visible";
+  el.parentElement.children[1].innerHTML = messageError;
+}
 
-  return data !== "Invalid Date";
+function formatDatePtBr(dataStringFormat) {
+  return moment(dataStringFormat).format("DD/MM/YYYY");
+}
+
+function replaceSlashBar(el) {
+  var regex = new RegExp(/\//g);
+  var data = el.value.replace(regex, "");
+
+  var ano = data.substring(4, 8);
+  var mes = data.substring(2, 4);
+  var dia = data.substring(0, 2);
+
+  return ano.concat("-").concat(mes).concat("-").concat(dia);
+}
+
+function validDate(dataStringFormat, el) {
+  hasError = false;
+  messageError = "";
+  data = moment(dataStringFormat).format("DD/MM/YYYY");
+
+  if (data === "Invalid date") {
+    messageError = "Data inválida!";
+    hasError = true;
+  }
+
+  if (!hasError && retroactiveDate(dataStringFormat, moment.now())) {
+    messageError = "Data informada deve ser maior ou igual a hoje.";
+    hasError = true;
+  }
+
+  if (!hasError && el.parentElement.id === "checkout") {
+    var elCheckin = document.getElementById("checkin").children[0];
+    var checkinDataStringFormat = replaceSlashBar(elCheckin);
+    if (
+      isSameDate(dataStringFormat, moment(checkinDataStringFormat)) ||
+      retroactiveDate(dataStringFormat, moment(checkinDataStringFormat))
+    ) {
+      messageError = "Data de checkout deve ser maior que checkin!";
+      hasError = true;
+    }
+  }
+
+  return {
+    hasError,
+    messageError,
+  };
+}
+
+function isSameDate(dataStringFormat, dataCompare) {
+  return moment(dataStringFormat).isSame(
+    moment(dataCompare),
+    "day",
+    "year",
+    "month"
+  );
+}
+
+function retroactiveDate(dataStringFormat, dataCompare) {
+  return moment(dataStringFormat).isBefore(dataCompare);
+}
+
+function reservar(event) {
+  validaData = function (el) {
+    var dataStringFormat = replaceSlashBar(el);
+
+    return validDate(dataStringFormat, el);
+  };
+
+  var divInfoQuarto = event.currentTarget;
+  var content = document.getElementById("modalContent");
+  var divLabelModal = document.getElementById("labelModal");
+  divLabelModal.innerHTML = "Alugar quarto";
+
+  var elCheckin = document.getElementById("checkin").children[0];
+  var elCheckout = document.getElementById("checkout").children[0];
+
+  var divModalFooter = document.querySelector(".modal-footer");
+  var buttonLogin = divModalFooter.children[0];
+  buttonLogin.innerText = "Login";
+
+  if (validaData(elCheckin).hasError || validaData(elCheckout).hasError) {
+    content.innerText =
+      "Não foi possível calcular o valor total apartir da datas informadas!";
+    buttonLogin.innerText = "Fechar";
+  } else {
+    const vlFormat = divInfoQuarto.children[0].innerText;
+    var priceDaily = parseFloat(vlFormat.replace(/\D[$]/g, ""));
+    var dias = calcDays(elCheckin, elCheckout);
+    var vltotal = priceDaily * dias;
+    content.innerHTML = `
+      <p>Você está reservando o quarto em ${
+        divInfoQuarto.children[1].innerHTML
+      }<br>
+        com diária no valor de ${vlFormat}.</br>
+        Sua estádia será de ${dias} dia(s).
+      </p>
+      <span>Valor total: ${formatCurrencyMoney(vltotal)}</span>
+      <p> Para prosseguir com sua reserva é necessário realizar o login.</p>
+    `;
+  }
+
+  var btnModal = document.getElementById("btn-modal");
+  btnModal.click();
+}
+
+function calcDays(elCheckin, elCheckout) {
+  checkinFormatString = replaceSlashBar(elCheckin);
+  checkoutFormatString = replaceSlashBar(elCheckout);
+
+  return moment(checkoutFormatString).diff(moment(checkinFormatString), "days");
+}
+
+function formatCurrencyMoney(vl) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(vl);
 }

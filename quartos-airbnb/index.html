@@ -43,7 +43,7 @@
 
     <div id="topo"></div>
 
-    <div class="container">
+    <div class="container-app">
       <div id="menu-hamburger" onclick="showFiltros()">
         <svg
           class="bi bi-list"
@@ -62,30 +62,38 @@
         <span>Filtro e Ordenação</span>
       </div>
       <div class="busca">
-        <input
-          id="inputCidade"
-          class="form-control"
-          type="text"
-          placeholder="Qual a cidade?"
-          name="busca"
-          onkeyup="filtrar(this)"
-        />
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Checkin"
-          maxlength="10"
-          onkeyup="maskData(event)"
-          onblur="maskData(event)"
-        />
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Checkout"
-          maxlength="10"
-          onkeyup="maskData(event)"
-          onblur="maskData(event)"
-        />
+        <div id="divBuscaCidade">
+          <input
+            id="inputCidade"
+            class="form-control"
+            type="text"
+            placeholder="Qual a cidade?"
+            name="busca"
+            onkeyup="filtrar(this)"
+          />
+        </div>
+        <div id="checkin">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Checkin"
+            maxlength="10"
+            onkeyup="maskData(event)"
+            onblur="maskData(event)"
+          />
+          <span></span>
+        </div>
+        <div id="checkout">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Checkout"
+            maxlength="10"
+            onkeyup="maskData(event)"
+            onblur="maskData(event)"
+          />
+          <span></span>
+        </div>
       </div>
 
       <div class="filtro">
@@ -160,7 +168,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="labelModalLocation"></h5>
+            <h5 class="modal-title" id="labelModal"></h5>
             <button
               type="button"
               class="close"
@@ -171,7 +179,7 @@
             </button>
           </div>
 
-          <div class="modal-body" id="map"></div>
+          <div class="modal-body" id="modalContent"></div>
 
           <div class="modal-footer">
             <button
@@ -193,5 +201,6 @@
     ></script>
     <script src="./scripts/script.js"></script>
     <script src="./scripts/filtros.js"></script>
+    <script src="https://unpkg.com/moment"></script>
   </body>
 </html>

@@ -3,6 +3,7 @@ var Filtro = (function () {
 
   function _porCidade() {
     var inputCidade = document.getElementById("inputCidade");
+    inputCidade;
     var regex = new RegExp(inputCidade.value, "i");
     _quartos = _quartos.filter((q) => regex.test(q.cidade.nome));
     return this;
